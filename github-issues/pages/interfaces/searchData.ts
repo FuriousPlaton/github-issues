@@ -6,6 +6,7 @@ export interface ISearchRepo{
     stargazers_count: number,
     updated_at: string,
     language: string,
+    repo: boolean,
 };
 export interface ISearchUser{
     id: number,
@@ -13,4 +14,5 @@ export interface ISearchUser{
     url: string,
     full_name: string,
     description: string,
+    repo: boolean,
 };

@@ -25,7 +25,8 @@ function randomData (dataR: any, dataU: any) {
                 url: dataR[i].url,
                 stargazers_count: dataR[i].stargazers_count,
                 updated_at: dataR[i].updated_at,
-                language: dataR[i].language
+                language: dataR[i].language,
+                repo: true,
             }
             combineData.push(data0)
         } else {
@@ -35,6 +36,7 @@ function randomData (dataR: any, dataU: any) {
                 description: dataU[i].description,
                 url: dataU[i].url,
                 avatar_url: dataU[i].avatar_url,
+                repo: false,
             }
             combineData.push(data1)
         }
