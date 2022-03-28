@@ -7,12 +7,15 @@ export interface ISearchRepo{
     updated_at: string,
     language: string,
     repo: boolean,
+    has_issues: boolean,
+    open_issues_count: number,
 };
 export interface ISearchUser{
-    id: number,
     avatar_url: string,
     url: string,
     full_name: string,
-    description: string,
+    bio: string,
     repo: boolean,
+    following: number,
+    followers: number,
 };

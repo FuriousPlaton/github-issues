@@ -12,12 +12,12 @@ async function getSearchUser(req: NextApiRequest) {
     return data.items;
 }
 
-function randomData (dataR: any, dataU: any) {
-    // const l = Math.floor((dataR.length + dataU.length)/2)-1
-    let combineData: any = [];
-    for(let i=0; i<30; i++) {
+async function randomData (dataR: any, dataU: any) {
+    let combineData: (ISearchUser | ISearchRepo)[] = [];
+    let i = 0;
+    while(dataR[i] != null || dataU[i] != null) {
         const rand = Math.floor(Math.random() * (10 - 1 +1) + 1);
-        if(rand%2 === 0) {
+        if(rand%2 === 0){
             const data0: ISearchRepo = {
                 name: dataR[i].name,
                 full_name: dataR[i].full_name,
@@ -26,29 +26,35 @@ function randomData (dataR: any, dataU: any) {
                 stargazers_count: dataR[i].stargazers_count,
                 updated_at: dataR[i].updated_at,
                 language: dataR[i].language,
+                has_issues: dataR[i].has_issues,
+                open_issues_count: dataR[i].open_issues_count,
                 repo: true,
             }
             combineData.push(data0)
         } else {
+            const user = await fetch(dataU[i].url).then()
+            const userJ = await user.json()
             const data1: ISearchUser = {
-                id: dataU[i].id,
                 full_name: dataU[i].full_name,
-                description: dataU[i].description,
+                bio: userJ.bio,
+                followers: userJ.followers,
+                following: userJ.following,
                 url: dataU[i].url,
                 avatar_url: dataU[i].avatar_url,
                 repo: false,
             }
             combineData.push(data1)
         }
+        i++;
     }
     return combineData;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<(ISearchUser | ISearchRepo) [] | undefined>) {
     const dataR = await getSearchRepo(req).then();
     const dataU = await getSearchUser(req).then();
     if (req.method === 'GET') {
-        res.status(200).json(randomData(dataR, dataU));
+        res.status(200).json(await randomData(dataR, dataU));
     } else {
         res.status(400);
     }
